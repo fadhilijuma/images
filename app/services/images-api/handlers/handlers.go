@@ -53,8 +53,6 @@ func APIMux(cfg APIMuxConfig, options ...func(opts *Options)) http.Handler {
 			cfg.Shutdown,
 			mid.Logger(cfg.Log),
 			mid.Errors(cfg.Log),
-			mid.Metrics(),
-			mid.Cors(opts.corsOrigin),
 			mid.Panics(),
 		)
 

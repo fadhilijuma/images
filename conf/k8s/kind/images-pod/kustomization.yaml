@@ -8,9 +8,3 @@ images:
 - name: images-api-image
   newName: images-api-amd64
   newTag: "1.0"
-- name: metrics-image
-  newName: metrics-amd64
-  newTag: "1.0"
-- name: openzipkin
-  newName: openzipkin/zipkin
-  newTag: "2.23"

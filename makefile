@@ -14,7 +14,7 @@ dev.setup.mac:
 # $(shell git rev-parse --short HEAD)
 VERSION := 1.0
 
-all: images-api metrics
+all: images-api
 
 images-api:
 	docker build \
@@ -24,13 +24,13 @@ images-api:
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
 
-metrics:
-	docker build \
-		-f conf/docker/dockerfile.metrics \
-		-t metrics-amd64:1.0 \
-		--build-arg BUILD_REF=1.0\
-		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		.
+#metrics:
+#	docker build \
+#		-f conf/docker/dockerfile.metrics \
+#		-t metrics-amd64:1.0 \
+#		--build-arg BUILD_REF=1.0\
+#		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+#		.
 
 # ==============================================================================
 # Running from within k8s/kind
@@ -58,9 +58,9 @@ kind-status:
 
 kind-load:
 	cd conf/k8s/kind/images-pod; kustomize edit set image images-api-image=images-api-amd64:$(VERSION)
-	cd conf/k8s/kind/images-pod; kustomize edit set image metrics-image=metrics-amd64:$(VERSION)
+#	cd conf/k8s/kind/images-pod; kustomize edit set image metrics-image=metrics-amd64:$(VERSION)
 	kind load docker-image images-api-amd64:$(VERSION) --name $(KIND_CLUSTER)
-	kind load docker-image metrics-amd64:$(VERSION) --name $(KIND_CLUSTER)
+#	kind load docker-image metrics-amd64:$(VERSION) --name $(KIND_CLUSTER)
 
 kind-apply:
 	kustomize build conf/k8s/kind/database-pod | kubectl apply -f -

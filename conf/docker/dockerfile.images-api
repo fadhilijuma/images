@@ -11,8 +11,7 @@ RUN go build -ldflags "-X main.build=${BUILD_REF}"
 FROM alpine:3.16
 ARG BUILD_DATE
 ARG BUILD_REF
-COPY --from=build_images-api --chown=images:images /service/conf/keys/. /service/conf/keys/.
-COPY --from=build_images-api --chown=images:images /service/app/tooling/admin /service/admin
+COPY --from=build_images-api /service/conf/keys/. /service/conf/keys/.
 COPY --from=build_images-api /service/app/services/images-api /service/images-api
 WORKDIR /service/images-api
 CMD ["./images-api"]
