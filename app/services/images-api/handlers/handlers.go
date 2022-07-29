@@ -10,7 +10,6 @@ import (
 
 	"github.com/fadhilijuma/images/app/services/images-api/handlers/debug/checkgrp"
 	v1 "github.com/fadhilijuma/images/app/services/images-api/handlers/v1"
-	"github.com/fadhilijuma/images/business/web/auth"
 	"github.com/fadhilijuma/images/business/web/v1/mid"
 	"github.com/fadhilijuma/images/foundation/web"
 	"github.com/jmoiron/sqlx"
@@ -33,8 +32,8 @@ func WithCORS(origin string) func(opts *Options) {
 type APIMuxConfig struct {
 	Shutdown chan os.Signal
 	Log      *zap.SugaredLogger
-	Auth     *auth.Auth
-	DB       *sqlx.DB
+	//Auth     *auth.Auth
+	DB *sqlx.DB
 }
 
 // APIMux constructs a http.Handler with all application routes defined.
@@ -77,9 +76,9 @@ func APIMux(cfg APIMuxConfig, options ...func(opts *Options)) http.Handler {
 
 	// Load the v1 routes.
 	v1.Routes(app, v1.Config{
-		Log:  cfg.Log,
-		Auth: cfg.Auth,
-		DB:   cfg.DB,
+		Log: cfg.Log,
+		//Auth: cfg.Auth,
+		DB: cfg.DB,
 	})
 
 	return app

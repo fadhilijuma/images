@@ -7,8 +7,6 @@ import (
 	"github.com/ardanlabs/conf/v3"
 	"github.com/fadhilijuma/images/app/services/images-api/handlers"
 	"github.com/fadhilijuma/images/business/sys/database"
-	"github.com/fadhilijuma/images/business/web/auth"
-	"github.com/fadhilijuma/images/foundation/keystore"
 	"github.com/fadhilijuma/images/foundation/logger"
 	_ "go.uber.org/automaxprocs"
 	"go.uber.org/automaxprocs/maxprocs"
@@ -98,22 +96,22 @@ func run(log *zap.SugaredLogger) error {
 		}
 		return fmt.Errorf("parsing config: %w", err)
 	}
-	// =================================================================================================================
-	// Initialize authentication support
-
-	log.Infow("startup", "status", "initializing authentication support")
-
-	// Construct a key store based on the key files stored in
-	// the specified directory.
-	ks, err := keystore.NewFS(os.DirFS(cfg.Auth.KeysFolder))
-	if err != nil {
-		return fmt.Errorf("reading keys: %w", err)
-	}
-
-	authProvider, err := auth.New(cfg.Auth.ActiveKID, ks)
-	if err != nil {
-		return fmt.Errorf("constructing auth: %w", err)
-	}
+	//// =================================================================================================================
+	//// Initialize authentication support
+	//
+	//log.Infow("startup", "status", "initializing authentication support")
+	//
+	//// Construct a key store based on the key files stored in
+	//// the specified directory.
+	//ks, err := keystore.NewFS(os.DirFS(cfg.Auth.KeysFolder))
+	//if err != nil {
+	//	return fmt.Errorf("reading keys: %w", err)
+	//}
+	//
+	//authProvider, err := auth.New(cfg.Auth.ActiveKID, ks)
+	//if err != nil {
+	//	return fmt.Errorf("constructing auth: %w", err)
+	//}
 
 	// =================================================================================================================
 	// Database Support
@@ -171,8 +169,8 @@ func run(log *zap.SugaredLogger) error {
 	apiMux := handlers.APIMux(handlers.APIMuxConfig{
 		Shutdown: shutdown,
 		Log:      log,
-		Auth:     authProvider,
-		DB:       db,
+		//Auth:     authProvider,
+		DB: db,
 	})
 
 	// Construct a server to service the requests against the mux.

@@ -48,7 +48,7 @@ spec:
             successThreshold: 1
             failureThreshold: 2
           env:
-          - name: SALES_DB_HOST
+          - name: IMAGES_DB_HOST
             valueFrom:
               configMapKeyRef:
                 name: app-config
@@ -69,14 +69,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
-        # metrics container configuration
-        - name: metrics
-          image: metrics-image
-          ports:
-            - name: metrics
-              containerPort: 3001
-            - name: metrics-debug
-              containerPort: 4001
 ---
 apiVersion: v1
 kind: Service
@@ -94,9 +86,3 @@ spec:
     - name: image-api-debug
       port: 4000
       targetPort: image-api-debug
-    - name: metrics
-      port: 3001
-      targetPort: metrics
-    - name: metrics-debug
-      port: 4001
-      targetPort: metrics-debug
