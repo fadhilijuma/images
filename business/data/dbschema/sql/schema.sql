@@ -3,7 +3,6 @@
 CREATE TABLE users (
 	user_id       UUID,
 	name          TEXT,
-    agency        TEXT,
     email         TEXT UNIQUE,
 	roles         TEXT[],
 	password_hash TEXT,

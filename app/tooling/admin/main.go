@@ -104,9 +104,8 @@ func processCommands(args conf.Args, log *zap.SugaredLogger, dbConfig database.C
 	case "useradd":
 		name := args.Num(1)
 		email := args.Num(2)
-		agency := args.Num(3)
-		password := args.Num(4)
-		if err := commands.UserAdd(log, dbConfig, name, email, agency, password); err != nil {
+		password := args.Num(3)
+		if err := commands.UserAdd(log, dbConfig, name, email, password); err != nil {
 			return fmt.Errorf("adding user: %w", err)
 		}
 

@@ -12,7 +12,6 @@ type User struct {
 	ID           string    `json:"id"`
 	Name         string    `json:"name"`
 	Email        string    `json:"email"`
-	Agency       string    `json:"agency"`
 	Roles        []string  `json:"roles"`
 	PasswordHash []byte    `json:"-"`
 	DateCreated  time.Time `json:"date_created"`
@@ -23,7 +22,6 @@ type User struct {
 type NewUser struct {
 	Name            string   `json:"name" validate:"required"`
 	Email           string   `json:"email" validate:"required,email"`
-	Agency          string   `json:"agency" validate:"required,agency"`
 	Roles           []string `json:"roles" validate:"required"`
 	Password        string   `json:"password" validate:"required"`
 	PasswordConfirm string   `json:"password_confirm" validate:"eqfield=Password"`
@@ -37,7 +35,6 @@ type NewUser struct {
 // marshalling/unmarshalling.
 type UpdateUser struct {
 	Name            *string  `json:"name"`
-	Agency          *string  `json:"agency"`
 	Email           *string  `json:"email" validate:"omitempty,email"`
 	Roles           []string `json:"roles"`
 	Password        *string  `json:"password"`

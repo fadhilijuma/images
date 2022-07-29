@@ -41,18 +41,18 @@ func (c Core) Create(ctx context.Context, np NewImage, now time.Time) (Image, er
 		return Image{}, fmt.Errorf("validating data: %w", err)
 	}
 
-	dbPrd := db.Image{
+	dbImg := db.Image{
 		ID:           validate.GenerateID(),
 		ImageURL:     np.ImageURL,
 		UserID:       np.UserID,
 		DateUploaded: now,
 	}
 
-	if err := c.store.Create(ctx, dbPrd); err != nil {
+	if err := c.store.Create(ctx, dbImg); err != nil {
 		return Image{}, fmt.Errorf("create: %w", err)
 	}
 
-	return toImage(dbPrd), nil
+	return toImage(dbImg), nil
 }
 
 // Update modifies data about a Product. It will error if the specified ID is

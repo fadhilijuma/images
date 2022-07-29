@@ -12,9 +12,9 @@ import (
 )
 
 // UserAdd adds new users into the database.
-func UserAdd(log *zap.SugaredLogger, cfg database.Config, name, email, agency, password string) error {
-	if name == "" || email == "" || password == "" || agency == "" {
-		fmt.Println("help: useradd <name> <email> <agency> <password>")
+func UserAdd(log *zap.SugaredLogger, cfg database.Config, name, email, password string) error {
+	if name == "" || email == "" || password == "" {
+		fmt.Println("help: useradd <name> <email> <password>")
 		return ErrHelp
 	}
 
@@ -32,7 +32,6 @@ func UserAdd(log *zap.SugaredLogger, cfg database.Config, name, email, agency, p
 	nu := user.NewUser{
 		Name:            name,
 		Email:           email,
-		Agency:          agency,
 		Password:        password,
 		PasswordConfirm: password,
 		Roles:           []string{auth.RoleAdmin, auth.RoleUser},

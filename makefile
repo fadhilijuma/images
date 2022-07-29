@@ -65,8 +65,8 @@ kind-load:
 kind-apply:
 	kustomize build conf/k8s/kind/database-pod | kubectl apply -f -
 	kubectl wait --namespace=database-system --timeout=120s --for=condition=Available deployment/database-pod
-	kustomize build conf/k8s/kind/zipkin-pod | kubectl apply -f -
-	kubectl wait --namespace=zipkin-system --timeout=120s --for=condition=Available deployment/zipkin-pod
+#	kustomize build conf/k8s/kind/zipkin-pod | kubectl apply -f -
+#	kubectl wait --namespace=zipkin-system --timeout=120s --for=condition=Available deployment/zipkin-pod
 	kustomize build conf/k8s/kind/images-pod | kubectl apply -f -
 
 kind-logs:

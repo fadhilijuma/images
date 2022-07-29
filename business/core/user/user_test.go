@@ -47,8 +47,8 @@ func Test_User(t *testing.T) {
 				Name:            "Fadhili Juma",
 				Email:           "ffumwa@gmail.com",
 				Roles:           []string{auth.RoleAdmin},
-				Password:        "gophers",
-				PasswordConfirm: "gophers",
+				Password:        "pass",
+				PasswordConfirm: "pass",
 			}
 
 			usr, err := core.Create(ctx, nu, now)

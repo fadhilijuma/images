@@ -14,12 +14,12 @@ import (
 	"github.com/fadhilijuma/images/foundation/web"
 )
 
-// Handlers manages the set of image endpoints.
+// Handlers manages the set of Image endpoints.
 type Handlers struct {
 	Image image.Core
 }
 
-// Create adds a new image to the system.
+// Create adds a new Image to the system.
 func (h Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	v, err := web.GetValues(ctx)
 	if err != nil {
@@ -39,7 +39,7 @@ func (h Handlers) Create(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return web.Respond(ctx, w, prod, http.StatusCreated)
 }
 
-// Update updates a image in the system.
+// Update updates an Image in the system.
 func (h Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	v, err := web.GetValues(ctx)
 	if err != nil {
@@ -70,7 +70,7 @@ func (h Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Req
 		}
 	}
 
-	// If you are not an admin and looking to update a image you don't own.
+	// If you are not an admin and looking to update an Image you don't own.
 	if !claims.Authorized(auth.RoleAdmin) && prd.UserID != claims.Subject {
 		return v1Web.NewRequestError(auth.ErrForbidden, http.StatusForbidden)
 	}
@@ -89,7 +89,7 @@ func (h Handlers) Update(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return web.Respond(ctx, w, nil, http.StatusNoContent)
 }
 
-// Delete removes a image from the system.
+// Delete removes an Image from the system.
 func (h Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	claims, err := auth.GetClaims(ctx)
 	if err != nil {
@@ -114,7 +114,7 @@ func (h Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Req
 		}
 	}
 
-	// If you are not an admin and looking to delete a image you don't own.
+	// If you are not an admin and looking to delete an Image you don't own.
 	if !claims.Authorized(auth.RoleAdmin) && prd.UserID != claims.Subject {
 		return v1Web.NewRequestError(auth.ErrForbidden, http.StatusForbidden)
 	}
@@ -131,7 +131,7 @@ func (h Handlers) Delete(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return web.Respond(ctx, w, nil, http.StatusNoContent)
 }
 
-// Query returns a list of products with paging.
+// Query returns a list of Images with paging.
 func (h Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	page := web.Param(r, "page")
 	pageNumber, err := strconv.Atoi(page)
@@ -152,7 +152,7 @@ func (h Handlers) Query(ctx context.Context, w http.ResponseWriter, r *http.Requ
 	return web.Respond(ctx, w, products, http.StatusOK)
 }
 
-// QueryByID returns a image by its ID.
+// QueryByID returns an Image by its ID.
 func (h Handlers) QueryByID(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	id := web.Param(r, "id")
 	prod, err := h.Image.QueryByID(ctx, id)
