@@ -1,0 +1,9 @@
+.git/
+.dockerignore
+.gitignore
+conf/docker/
+conf/k8s/
+CONTRIBUTORS
+LICENSE
+makefile
+README.md
