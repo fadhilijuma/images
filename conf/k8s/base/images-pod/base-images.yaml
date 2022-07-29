@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: images-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: images-pod # Base POD name
+  namespace: images-system
+spec:
+  selector:
+    matchLabels:
+      app: images # Selector for POD name search.
+  template:
+    metadata:
+      labels:
+        app: images
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+        # sales-api container configuration
+        - name: images-api
+          image: images-api-image
+          ports:
+            - name: images-api
+              containerPort: 3000
+            - name: image-api-debug
+              containerPort: 4000
+          readinessProbe: # readiness probes mark the service available to accept traffic.
+            httpGet:
+              path: /debug/readiness
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 2
+          livenessProbe: # liveness probes mark the service alive or dead (to be restarted).
+            httpGet:
+              path: /debug/liveness
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 2
+          env:
+          - name: SALES_DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: db_host
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: KUBERNETES_PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: KUBERNETES_NAMESPACE_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KUBERNETES_NODENAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+        # metrics container configuration
+        - name: metrics
+          image: metrics-image
+          ports:
+            - name: metrics
+              containerPort: 3001
+            - name: metrics-debug
+              containerPort: 4001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: images-service
+  namespace: images-system
+spec:
+  type: ClusterIP
+  selector:
+    app: images
+  ports:
+    - name: images-api
+      port: 3000
+      targetPort: images-api
+    - name: image-api-debug
+      port: 4000
+      targetPort: image-api-debug
+    - name: metrics
+      port: 3001
+      targetPort: metrics
+    - name: metrics-debug
+      port: 4001
+      targetPort: metrics-debug

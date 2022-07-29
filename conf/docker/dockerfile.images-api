@@ -1,0 +1,25 @@
+FROM golang:1.18 as build_images-api
+ENV CGO_ENABLED 0
+ARG BUILD_REF
+
+COPY . /service
+
+WORKDIR /service/app/services/images-api
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
+# Run the Go Binary in Alpine.
+FROM alpine:3.16
+ARG BUILD_DATE
+ARG BUILD_REF
+COPY --from=build_images-api --chown=images:images /service/conf/keys/. /service/conf/keys/.
+COPY --from=build_images-api --chown=images:images /service/app/tooling/admin /service/admin
+COPY --from=build_images-api /service/app/services/images-api /service/images-api
+WORKDIR /service/images-api
+CMD ["./images-api"]
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.title="images-api" \
+      org.opencontainers.image.authors="Fadhili Juma <fadhili.fumwa@alation.com>" \
+      org.opencontainers.image.source="github.com/fadhilijuma/images" \
+      org.opencontainers.image.revision="${BUILD_REF}" \
+      org.opencontainers.image.vendor="Semi Technologies"
