@@ -38,8 +38,8 @@ func NewMap(store map[string]*rsa.PrivateKey) *KeyStore {
 
 // NewFS constructs a KeyStore based on a set of PEM files rooted inside
 // of a directory. The name of each PEM file will be used as the key id.
-// Example: keystore.NewFS(os.DirFS("/zarf/keys/"))
-// Example: /zarf/keys/54bb2165-71e1-41a6-af3e-7da4a0e1e2c1.pem
+// Example: keystore.NewFS(os.DirFS("/conf/keys/"))
+// Example: /conf/keys/54bb2165-71e1-41a6-af3e-7da4a0e1e2c1.pem
 func NewFS(fsys fs.FS) (*KeyStore, error) {
 	ks := New()
 

@@ -19,17 +19,18 @@ all: images-api metrics
 images-api:
 	docker build \
 		-f conf/docker/dockerfile.images-api \
-		-t images-api-amd64:1.0 \
-		--build-arg BUILD_REF=1.0 \
+		-t images-api-amd64:$(VERSION) \
+		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
 
 metrics:
 	docker build \
 		-f conf/docker/dockerfile.metrics \
-		-t metrics-amd64:$(VERSION) \
-		--build-arg BUILD_REF=$(VERSION) \
+		-t metrics-amd64:1.0 \
+		--build-arg BUILD_REF=1.0\
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		.
 
 # ==============================================================================
 # Running from within k8s/kind
@@ -128,10 +129,10 @@ kind-database:
  # Administration
 
 migrate:
-	go run app/tooling/sales-admin/main.go migrate
+	go run app/tooling/admin/main.go migrate
 
 seed: migrate
-	go run app/tooling/sales-admin/main.go seed
+	go run app/tooling/admin/main.go seed
 
  # ==============================================================================
  # Running tests within the local computer

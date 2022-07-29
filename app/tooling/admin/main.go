@@ -57,7 +57,7 @@ func run(log *zap.SugaredLogger) error {
 		},
 	}
 
-	const prefix = "SALES"
+	const prefix = "IMAGES"
 	help, err := conf.Parse(prefix, &cfg)
 	if err != nil {
 		if errors.Is(err, conf.ErrHelpWanted) {
@@ -104,8 +104,9 @@ func processCommands(args conf.Args, log *zap.SugaredLogger, dbConfig database.C
 	case "useradd":
 		name := args.Num(1)
 		email := args.Num(2)
-		password := args.Num(3)
-		if err := commands.UserAdd(log, dbConfig, name, email, password); err != nil {
+		agency := args.Num(3)
+		password := args.Num(4)
+		if err := commands.UserAdd(log, dbConfig, name, email, agency, password); err != nil {
 			return fmt.Errorf("adding user: %w", err)
 		}
 

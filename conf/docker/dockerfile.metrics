@@ -9,7 +9,7 @@ COPY . /service
 
 # Build the service binary. We are doing this last since this will be different
 # every time we run through this process.
-WORKDIR /images/app/services/metrics
+WORKDIR /service/app/services/metrics
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
 
 
@@ -19,8 +19,8 @@ ARG BUILD_DATE
 ARG BUILD_REF
 RUN addgroup -g 1000 -S metrics && \
     adduser -u 1000 -h /service -G metrics -S metrics
-COPY --from=build_metrics --chown=metrics:metrics /images/app/services/metrics /service/metrics
-WORKDIR /service
+COPY --from=build_metrics /service/app/services/metrics /service/metrics
+WORKDIR /service/metrics
 USER metrics
 CMD ["./metrics"]
 
